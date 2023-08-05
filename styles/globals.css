@@ -1,3 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .container {
+    @apply md:max-w-[1440px] mx-auto py-8 px-10;
+  }
+  .button {
+    @apply bg-purple-700 text-white rounded-lg py-2 px-8 w-full md:w-auto;
+  }
+}

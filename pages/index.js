@@ -1,11 +1,39 @@
 import Link from "next/link";
-import useFetch from "../Hooks/useFetch/useFetch";
 import Todolist from "../components/TodoList/TodoList";
 import TodoForm from "../components/TodoForm/TodoForm";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 export default function Home() {
-  const { data, loading, error } = useFetch("/api/todos");
-  if (loading) return <div className="container">Loading ...</div>;
-  if (error) return console.log(error);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios
+      .get("/api/todos")
+      .then(({ data }) => {
+        setLoading(false);
+        setData(data.todos);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }, []);
+
+  const deleteTodo = (id) => {
+    axios
+      .delete(`/api/todos/${id}`)
+      .then(({ data }) => {
+        setData(data.todos);
+        setLoading(fales);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  if (loading) return <div className="container">Loading</div>;
+
   return (
     <div className="container">
       <header className="max-w-full flex items-center justify-between">
@@ -25,7 +53,9 @@ export default function Home() {
       </header>
       <div className="flex flex-col gap-10 items-center justify-center my-20">
         <TodoForm />
-        <Todolist data={data} />
+        <div className="w-full">
+          <Todolist data={data} onDelete={deleteTodo} />
+        </div>
       </div>
     </div>
   );

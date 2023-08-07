@@ -25,11 +25,24 @@ export default function Home() {
       .delete(`/api/todos/${id}`)
       .then(({ data }) => {
         setData(data.todos);
-        setLoading(fales);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error.message);
       });
+  };
+
+  const addTodo = (event, formData) => {
+    event.preventDefault();
+    axios
+      .post("/api/todos", formData)
+      .then(({ data }) => {
+        setData(data.todos);
+        setLoading(false);
+        formData.title = "";
+        formData.description = "";
+      })
+      .catch((err) => console.log(err.message));
   };
 
   if (loading) return <div className="container">Loading</div>;
@@ -52,7 +65,7 @@ export default function Home() {
         </div>
       </header>
       <div className="flex flex-col gap-10 items-center justify-center my-20">
-        <TodoForm />
+        <TodoForm onAdd={addTodo} />
         <div className="w-full">
           <Todolist data={data} onDelete={deleteTodo} />
         </div>

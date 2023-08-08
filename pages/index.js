@@ -45,6 +45,16 @@ export default function Home() {
       .catch((err) => console.log(err.message));
   };
 
+  const handleComplete = (id) => {
+    axios
+      .put(`/api/todos/complete/${id}`)
+      .then(({ data }) => {
+        setData(data.todos);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err.message));
+  };
+
   if (loading) return <div className="container">Loading</div>;
 
   return (
@@ -67,7 +77,11 @@ export default function Home() {
       <div className="flex flex-col gap-10 items-center justify-center my-20">
         <TodoForm onAdd={addTodo} />
         <div className="w-full">
-          <Todolist data={data} onDelete={deleteTodo} />
+          <Todolist
+            data={data}
+            onDelete={deleteTodo}
+            onComplete={handleComplete}
+          />
         </div>
       </div>
     </div>

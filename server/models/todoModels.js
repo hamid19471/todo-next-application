@@ -6,6 +6,10 @@ const todoSchema = new Schema({
     require: true,
   },
   description: String,
+  isCompleted: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Todo = models.Todo || model("Todo", todoSchema);
